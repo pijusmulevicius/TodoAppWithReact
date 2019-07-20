@@ -7,8 +7,8 @@ import {Dan} from './dan.js';
 import todosData from './urgent.js';
 import lTodosData from './NonUrgent.js';
 import doneData from './Done.js';
-
-
+var numbah = 1000;
+var form;
 class App extends Component{
   constructor(){
     super();
@@ -19,7 +19,8 @@ class App extends Component{
       UrColor: 'null',
       LtColor: 'null',
       DoColor: 'null',
-      somstat: 'u',
+      somstat: '',
+      statusNode: 'u',
       isAdd: true
 
     }
@@ -29,6 +30,7 @@ class App extends Component{
     this.doin = this.doin.bind(this);
     this.loin = this.loin.bind(this);
     this.dung = this.dung.bind(this);
+    this.addStuff = this.addStuff.bind(this);
   }
   nowUrgent(todoItems){
     this.setState({
@@ -36,7 +38,7 @@ class App extends Component{
       LtColor: 'white',
       DoColor: 'white',
       curStat: "",
-      somstat: todoItems
+      statusNode: 'u'
   });
 }
   nowLater(ltodoItems){
@@ -44,7 +46,7 @@ class App extends Component{
     UrColor: 'white',
     LtColor: 'red',
     DoColor: 'white',
-    somstat: ltodoItems
+    statusNode: 'l'
   });
   }
   nowDone(dun){
@@ -52,7 +54,7 @@ class App extends Component{
       UrColor: 'white',
       LtColor: 'white',
       DoColor: 'red',
-      somstat: dun
+      statusNode: 'd'
     });
   }
 
@@ -187,16 +189,47 @@ dung(id){
       somstat: 'd'
     });
 };
+addStuff(val){
+  const arr = this.state.urGent;
 
+
+  arr.push({
+    id: numbah,
+    text: val
+  });
+  numbah+=50;
+  this.setState({
+    urGent: arr,
+    statusNode: 'u'
+  })
+  console.log('did some shit');
+}
 
   render(){
-
+    console.log(this.state.statusNode);
     var todoItems = this.state.urGent.map(item => <Urg key={item.id} text={item.text} doin={this.doin} id={item.id} todoItems={this.todoItems}/>)
     var ltodoItems = this.state.Nurgent.map(item => <Ltr key={item.id} text={item.text} loin={this.loin} id={item.id} ltodoItems={this.ltodoItems}/>)
     var dun = this.state.dun.map(item => <Dan key={item.id} text={item.text} dung={this.dung} id={item.id} dun={this.dun}/>)
-    if(this.state.somstat === 'u')this.state.somstat = todoItems;
-    if(this.state.somstat === 'l')this.state.somstat = ltodoItems;
-    if(this.state.somstat === 'd')this.state.somstat = dun;
+
+    if(this.state.statusNode === 'u')
+    {
+      this.state.somstat = todoItems;
+      form =
+      <div>
+      <input type="text" placeholder="What's so urgent?" id="urgency"/>
+      <button onClick={(event) => this.addStuff(urgency.value)}>submit</button>
+      </div>
+    }
+
+    if(this.state.statusNode === 'l'){
+      this.state.somstat = ltodoItems;
+      //form = null;
+    }
+    if(this.state.statusNode === 'd'){
+      this.state.somstat = dun;
+      //form = null;
+    }
+
     return(
       <div className="mainContainer">
         <ul>
@@ -207,6 +240,7 @@ dung(id){
         <div style={{backgroundColor: '#ded6bf'}}>
         {this.state.somstat}
         </div>
+        {form}
       </div>
     );
 }
