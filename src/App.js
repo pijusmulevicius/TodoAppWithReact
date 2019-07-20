@@ -8,6 +8,7 @@ import todosData from './urgent.js';
 import lTodosData from './NonUrgent.js';
 import doneData from './Done.js';
 var numbah = 1000;
+var bumbah = 2000;
 var form;
 class App extends Component{
   constructor(){
@@ -31,6 +32,7 @@ class App extends Component{
     this.loin = this.loin.bind(this);
     this.dung = this.dung.bind(this);
     this.addStuff = this.addStuff.bind(this);
+    this.addStuffL = this.addStuffL.bind(this);
   }
   nowUrgent(todoItems){
     this.setState({
@@ -204,6 +206,21 @@ addStuff(val){
   })
   console.log('did some shit');
 }
+addStuffL(val){
+  const arr = this.state.Nurgent;
+
+
+  arr.push({
+    id: bumbah,
+    text: val
+  });
+  numbah+=50;
+  this.setState({
+    Nurgent: arr,
+    statusNode: 'l'
+  })
+  console.log('did some shit');
+}
 
   render(){
     console.log(this.state.statusNode);
@@ -223,7 +240,11 @@ addStuff(val){
 
     if(this.state.statusNode === 'l'){
       this.state.somstat = ltodoItems;
-      //form = null;
+      form =
+      <div>
+      <input type="text" placeholder="not so urgent?" id="nurgency"/>
+      <button onClick={(event) => this.addStuffL(nurgency.value)}>submit</button>
+      </div>
     }
     if(this.state.statusNode === 'd'){
       this.state.somstat = dun;
