@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {Urg} from './urg.js';
-import {Ltr} from './ltr.js';
-import {Dan} from './dan.js';
+import {Urg, Ltr, Dan} from './elementSpecification.js';
 import todosData from './urgent.js';
 import lTodosData from './NonUrgent.js';
 import doneData from './Done.js';
@@ -14,32 +12,28 @@ class App extends Component{
   constructor(){
     super();
     this.state ={
-      urGent: todosData,
-      Nurgent: lTodosData,
-      dun: doneData,
+      UrgentTodos: todosData,
+      NonUrgentTodos: lTodosData,
+      DoneTodos: doneData,
       UrColor: 'null',
       LtColor: 'null',
       DoColor: 'null',
       somstat: '',
       statusNode: 'u',
-      isAdd: true
-
+      garbage: {id:999, text: 'fuckoff', completed: false}
     }
     this.nowUrgent = this.nowUrgent.bind(this);
     this.nowLater = this.nowLater.bind(this);
     this.nowDone = this.nowDone.bind(this);
-    this.doin = this.doin.bind(this);
-    this.loin = this.loin.bind(this);
+    this.moving = this.moving.bind(this);
     this.dung = this.dung.bind(this);
     this.addStuff = this.addStuff.bind(this);
-    this.addStuffL = this.addStuffL.bind(this);
   }
   nowUrgent(todoItems){
     this.setState({
       UrColor: 'red',
       LtColor: 'white',
       DoColor: 'white',
-      curStat: "",
       statusNode: 'u'
   });
 }
@@ -60,12 +54,12 @@ class App extends Component{
     });
   }
 
-  doin(id, option){
-    const arr = this.state.urGent;
+  moving(id, shouldRemain, event, changeling){
+    var arr = this.state[event.target.name];
     var element = '';
-    if(option === 1)
-    {
-      const arr2 = this.state.dun;
+    var arr2 = [];
+    if(shouldRemain)arr2 = this.state[changeling];
+    console.log(arr2);
       for(var i = 0; i < arr.length; i++)
       {
         if(arr[i].id == id)
@@ -74,110 +68,16 @@ class App extends Component{
           arr.splice(i, 1);
           arr2.push(element);
         }
-
       }
       this.setState({
-        urGent: arr,
-        dun: arr2,
+        [event.target.name]: arr,
+        [changeling]: arr2,
         somstat: 'u'
       });
-    }
+    };
 
-    else if(option === 2)
-    {
-      const arr2 = this.state.Nurgent;
-      for(var i = 0; i < arr.length; i++)
-      {
-        if(arr[i].id == id)
-        {
-          element = arr[i];
-          arr.splice(i, 1);
-          arr2.push(element);
-        }
-      }
-      this.setState({
-        urGent: arr,
-        Nurgent: arr2,
-        somstat: 'u'
-      });
-    }
-    else
-    {
-      for(var i = 0; i < arr.length; i++)
-      {
-        if(arr[i].id == id)
-        {
-          arr.splice(i, 1);
-          break;
-        }
-      }
-      this.setState({
-        urGent: arr,
-        somstat: 'u'
-      });
-    }
-  };
-//-----------------------------------------------------------------
-  loin(id, option){
-    const arr = this.state.Nurgent;
-    var element = '';
-    if(option === 1)
-    {
-      const arr2 = this.state.dun;
-      for(var i = 0; i < arr.length; i++)
-      {
-        if(arr[i].id == id)
-        {
-          element = arr[i];
-          arr.splice(i, 1);
-          arr2.push(element);
-        }
-
-      }
-      this.setState({
-        Nurgent: arr,
-        dun: arr2,
-        somstat: 'l'
-      });
-    }
-
-    else if(option === 2)
-    {
-      const arr2 = this.state.urGent;
-      for(var i = 0; i < arr.length; i++)
-      {
-        if(arr[i].id == id)
-        {
-          element = arr[i];
-          arr.splice(i, 1);
-          arr2.push(element);
-        }
-      }
-      this.setState({
-        Nurgent: arr,
-        urGent: arr2,
-        somstat: 'l'
-      });
-    }
-    else
-    {
-      for(var i = 0; i < arr.length; i++)
-      {
-        if(arr[i].id == id)
-        {
-          arr.splice(i, 1);
-          break;
-        }
-      }
-      this.setState({
-        Nurgent: arr,
-        somstat: 'l'
-      });
-    }
-  };
-//-----------------------------------------------------------------
 dung(id){
-  const arr = this.state.dun;
+  const arr = this.state.DoneTodos;
     for(var i = 0; i < arr.length; i++)
     {
       if(arr[i].id == id)
@@ -187,46 +87,29 @@ dung(id){
       }
     }
     this.setState({
-      dun: arr,
+      DoneTodos: arr,
       somstat: 'd'
     });
 };
-addStuff(val){
-  const arr = this.state.urGent;
-
-
+addStuff(val, list){
+  const arr = this.state[list];
   arr.push({
     id: numbah,
     text: val
   });
   numbah+=50;
   this.setState({
-    urGent: arr,
-    statusNode: 'u'
+    [list]: arr,
   })
   console.log('did some shit');
 }
-addStuffL(val){
-  const arr = this.state.Nurgent;
 
-
-  arr.push({
-    id: bumbah,
-    text: val
-  });
-  numbah+=50;
-  this.setState({
-    Nurgent: arr,
-    statusNode: 'l'
-  })
-  console.log('did some shit');
-}
 
   render(){
     console.log(this.state.statusNode);
-    var todoItems = this.state.urGent.map(item => <Urg key={item.id} text={item.text} doin={this.doin} id={item.id} todoItems={this.todoItems}/>)
-    var ltodoItems = this.state.Nurgent.map(item => <Ltr key={item.id} text={item.text} loin={this.loin} id={item.id} ltodoItems={this.ltodoItems}/>)
-    var dun = this.state.dun.map(item => <Dan key={item.id} text={item.text} dung={this.dung} id={item.id} dun={this.dun}/>)
+    var todoItems = this.state.UrgentTodos.map(item => <Urg key={item.id} text={item.text} moving={this.moving} id={item.id} todoItems={this.todoItems}/>)
+    var ltodoItems = this.state.NonUrgentTodos.map(item => <Ltr key={item.id} text={item.text} moving={this.moving} id={item.id} ltodoItems={this.ltodoItems}/>)
+    var dun = this.state.DoneTodos.map(item => <Dan key={item.id} text={item.text} dung={this.dung} id={item.id} dun={this.dun}/>)
 
     if(this.state.statusNode === 'u')
     {
@@ -234,7 +117,7 @@ addStuffL(val){
       form =
       <div>
       <input type="text" placeholder="What's so urgent?" id="urgency"/>
-      <button onClick={(event) => this.addStuff(urgency.value)}>submit</button>
+      <button onClick={(event) => this.addStuff(urgency.value, 'UrgentTodos')}>submit</button>
       </div>
     }
 
@@ -243,12 +126,12 @@ addStuffL(val){
       form =
       <div>
       <input type="text" placeholder="not so urgent?" id="nurgency"/>
-      <button onClick={(event) => this.addStuffL(nurgency.value)}>submit</button>
+      <button onClick={(event) => this.addStuff(nurgency.value, 'NonUrgentTodos')}>submit</button>
       </div>
     }
     if(this.state.statusNode === 'd'){
       this.state.somstat = dun;
-      //form = null;
+      form = null;
     }
 
     return(
