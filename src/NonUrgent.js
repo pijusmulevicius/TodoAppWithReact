@@ -1,4 +1,4 @@
-const lTodosData= [
+const nuTodosData= [
   {
       id: 100,
       text: "Visit other planets",
@@ -26,4 +26,4 @@ const lTodosData= [
   }
 ]
 
-export default lTodosData;
+export default nuTodosData;

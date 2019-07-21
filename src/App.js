@@ -3,17 +3,17 @@ import logo from './logo.svg';
 import './App.css';
 import {Urg, Ltr, Dan} from './elementSpecification.js';
 import todosData from './urgent.js';
-import lTodosData from './NonUrgent.js';
+import nuTodosData from './NonUrgent.js';
 import doneData from './Done.js';
 var numbah = 1000;
-var bumbah = 2000;
 var form;
+
 class App extends Component{
   constructor(){
     super();
     this.state ={
       UrgentTodos: todosData,
-      NonUrgentTodos: lTodosData,
+      NonUrgentTodos: nuTodosData,
       DoneTodos: doneData,
       UrColor: 'null',
       LtColor: 'null',
@@ -26,7 +26,6 @@ class App extends Component{
     this.nowLater = this.nowLater.bind(this);
     this.nowDone = this.nowDone.bind(this);
     this.moving = this.moving.bind(this);
-    this.dung = this.dung.bind(this);
     this.addStuff = this.addStuff.bind(this);
   }
   nowUrgent(todoItems){
@@ -53,7 +52,6 @@ class App extends Component{
       statusNode: 'd'
     });
   }
-
   moving(id, shouldRemain, event, changeling){
     var arr = this.state[event.target.name];
     var element = '';
@@ -75,22 +73,6 @@ class App extends Component{
         somstat: 'u'
       });
     };
-
-dung(id){
-  const arr = this.state.DoneTodos;
-    for(var i = 0; i < arr.length; i++)
-    {
-      if(arr[i].id == id)
-      {
-        arr.splice(i, 1);
-        break;
-      }
-    }
-    this.setState({
-      DoneTodos: arr,
-      somstat: 'd'
-    });
-};
 addStuff(val, list){
   const arr = this.state[list];
   arr.push({
@@ -101,15 +83,13 @@ addStuff(val, list){
   this.setState({
     [list]: arr,
   })
-  console.log('did some shit');
 }
 
 
   render(){
-    console.log(this.state.statusNode);
     var todoItems = this.state.UrgentTodos.map(item => <Urg key={item.id} text={item.text} moving={this.moving} id={item.id} todoItems={this.todoItems}/>)
     var ltodoItems = this.state.NonUrgentTodos.map(item => <Ltr key={item.id} text={item.text} moving={this.moving} id={item.id} ltodoItems={this.ltodoItems}/>)
-    var dun = this.state.DoneTodos.map(item => <Dan key={item.id} text={item.text} dung={this.dung} id={item.id} dun={this.dun}/>)
+    var dun = this.state.DoneTodos.map(item => <Dan key={item.id} text={item.text} moving={this.moving} id={item.id} dun={this.dun}/>)
 
     if(this.state.statusNode === 'u')
     {

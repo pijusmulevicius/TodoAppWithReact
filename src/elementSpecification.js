@@ -13,7 +13,7 @@ function Urg(props) {
     <div className="buttons">
     <img src={done} width="35px" height="35px" name="UrgentTodos" onClick={(event) => props.moving(props.id, true, event, 'DoneTodos')}/>
     <img src={moveToLater} width="35px" height="35px" name="UrgentTodos" onClick={(event) => props.moving(props.id, true, event, 'NonUrgentTodos')}/>
-        <img src={del} width="35px" height="35px" name="UrgentTodos" onClick={(event) => props.moving(props.id, false, event, 'garbage')}/>
+      <img src={del} width="35px" height="35px" name="UrgentTodos" onClick={(event) => props.moving(props.id, false, event, 'garbage')}/>
     </div>
     </div>
   );
@@ -39,7 +39,7 @@ function Dan(props) {
     <p  id="inlined">{props.text}</p>
 
     <div className="buttons">
-    <img src={del} width="35px" height="35px" onClick={(event) => props.dung(props.id)}/>
+    <img src={del} width="35px" height="35px" name="DoneTodos" onClick={(event) => props.moving(props.id, false, event, 'garbage')}/>
     </div>
     </div>
   );
